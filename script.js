@@ -285,15 +285,29 @@ const fetch_API= async (api)=>{//async có nhiệm vụ: biến hàm này thành
 
 
 //lấy data fetch đổ ra html: ul li dùng nmảng mới map(gọn hơn chút so với xài nối chuỗi)
-fetch_API("https://dummyjson.com/users")
- .then((data) =>{ //mục địch của .then là chờ đợi thằng fetch api xong
-    let newArray = data.users.map(x => `<li>${x.lastName} - ${x.email}</li>`);
+// fetch_API("https://dummyjson.com/users")
+//  .then((data) =>{ //mục địch của .then là chờ đợi thằng fetch api xong
+//     let newArray = data.users.map(x => `<li>${x.lastName} - ${x.email}</li>`);
 
-    //console.log(newArray.join(""));//mảng các tag li,join có dấu "" để huy dấu , ở giữa các item
+//     //console.log(newArray.join(""));//mảng các tag li,join có dấu "" để huy dấu , ở giữa các item
 
-    const div_ul=document.querySelector("#users_html");
-    div_ul.innerHTML=newArray.join("");
- })
+//     const div_ul=document.querySelector("#users_html");
+//     div_ul.innerHTML=newArray.join("");
+//  })
+
+
+
+//npm fake api
+ //lấy data fetch đổ ra html: ul li dùng nmảng mới map(gọn hơn chút so với xài nối chuỗi)
+fetch_API("http://localhost:3000/users")
+.then((data) =>{ //mục địch của .then là chờ đợi thằng fetch api xong
+   let newArray = data.map(x => `<li>${x.lastName} - ${x.email}</li>`);
+
+   //console.log(newArray.join(""));//mảng các tag li,join có dấu "" để huy dấu , ở giữa các item
+
+   const div_ul=document.querySelector("#users_html");
+   div_ul.innerHTML=newArray.join("");
+})
  
  
  
