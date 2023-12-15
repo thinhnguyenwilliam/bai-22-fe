@@ -239,64 +239,109 @@
 
 
 ////////////////////
-//viết sẵn 1 hàm fetch api
-const fetch_API=()=>{
-      fetch("https://dummyjson.com/users")
-   .then((res) => {
-      return res.json();
-   })
-   .then((data) =>{ 
-      return data;
-   })
+//viết sẵn 1 hàm fetch api: code của anh Nam, fetch là hàm promise:bất đồng bộ
+// const fetch_API=(api)=>{
+//    let result=fetch(api)
+//    .then((response) => {
+//       return response.json();
+//    })
+//    .then((data) =>{ 
+//       return data;
+//    })
+//    return result;
+// };
+//////////////////
+
+
+
+//async,await dùng cho call api
+const fetch_API= async (api)=>{//async có nhiệm vụ: biến hàm này thành hàm promise de chờ đợi
+   let response= await fetch(api);//await: chờ cho fetch thực hiện xong thì mới sử dụng cho các lệnh phía dưới
+   //console.log(response);// trả ra {pending} vì fetch là hàm bdb nó khg chờ fetch xong mà gán liển ngay lập tức
+   let result= await response.json();//await: chờ cho response.json() thực hiện xong thì mới sử dụng cho các lệnh phía dưới
+   console.log(result);
+
+   return result;
 };
 
 
-
-
+////////////////////
+//viết sẵn 1 hàm fetch api: code của chat gpt
+// const fetch_API = (api) => {
+//    return fetch(api)
+//       .then((response) => {
+//          return response.json();
+//       })
+//       .then((data) => { 
+//          return data;
+//       })
+//       .catch((error) => {
+//          console.error('Error fetching data:', error);
+//          throw error; // Rethrow the error to be caught by the caller
+//       });
+// };
 //////////////////
 
 
 
 //lấy data fetch đổ ra html: ul li dùng nmảng mới map(gọn hơn chút so với xài nối chuỗi)
-// fetch("https://dummyjson.com/users")
-//  .then((res) => {
-//     return res.json();
-// })
-//  .then((data) =>{ 
-//     let newArray = data.users.map(x => `<li>${x.lastName} - ${x.email}</li>`);
+fetch_API("https://dummyjson.com/users")
+ .then((data) =>{ //mục địch của .then là chờ đợi thằng fetch api xong
+    let newArray = data.users.map(x => `<li>${x.lastName} - ${x.email}</li>`);
 
-//     console.log(newArray.join(""));//mảng các tag li,join có dấu "" để huy dấu , ở giữa các item
+    //console.log(newArray.join(""));//mảng các tag li,join có dấu "" để huy dấu , ở giữa các item
 
-//     const div_ul=document.querySelector("#users_html");
-//     div_ul.innerHTML=newArray.join("");
-//  })
- 
- 
- 
- 
-////////////////////
-fetch("https://dummyjson.com/products")
- .then((res) => {
-   return res.json();
-})
- .then((data) =>{    // data là chuôi json đã được chuyển thành js
-   console.log(data.products);
-   let newArray = data.products.map(x => 
-         `
-            <div class="product_item">
-            <div class="inner_image">
-               <img src="${x.thumbnail}" alt="${x.title}">
-            </div>
-            <div class="inner_content">
-               <h3 class="inner_title">${x.title}</h3>
-               <div class="inner_price">${x.price}</div>
-               <div class="inner_stock">Còn lại: ${x.stock}</div>
-            </div>
-            </div>
-         `
-      );
-   const divProductList=document.querySelector("#product_list");
-   divProductList.innerHTML=newArray.join("");
+    const div_ul=document.querySelector("#users_html");
+    div_ul.innerHTML=newArray.join("");
  })
+ 
+ 
+ 
+ 
+////////////////////: khi chưa fake api từ npm
+// fetch_API("https://dummyjson.com/products")
+//  .then((data) =>{    // data là chuôi json đã được chuyển thành js
+//    console.log(data.products);
+//    let newArray = data.products.map(x => 
+//          `
+//             <div class="product_item">
+//             <div class="inner_image">
+//                <img src="${x.thumbnail}" alt="${x.title}">
+//             </div>
+//             <div class="inner_content">
+//                <h3 class="inner_title">${x.title}</h3>
+//                <div class="inner_price">${x.price}</div>
+//                <div class="inner_stock">Còn lại: ${x.stock}</div>
+//             </div>
+//             </div>
+//          `
+//       );
+//    const divProductList=document.querySelector("#product_list");
+//    divProductList.innerHTML=newArray.join("");
+//  })
 
+
+
+
+ ////////////////////: fake api từ npm
+fetch_API("http://localhost:3000/products")
+.then((data) =>{    // data là chuôi json đã được chuyển thành js
+  console.log(data);
+  let newArray = data.map(x => 
+        `
+           <div class="product_item">
+           <div class="inner_image">
+              <img src="${x.thumbnail}" alt="${x.title}">
+           </div>
+           <div class="inner_content">
+              <h3 class="inner_title">${x.title}</h3>
+              <div class="inner_price">${x.price}</div>
+              <div class="inner_stock">Còn lại: ${x.stock}</div>
+           </div>
+           </div>
+        `
+     );
+  const divProductList=document.querySelector("#product_list");
+  divProductList.innerHTML=newArray.join("");
+})
 
