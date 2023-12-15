@@ -359,3 +359,10 @@ fetch_API("http://localhost:3000/products")
   divProductList.innerHTML=newArray.join("");
 })
 
+/////////////////revew lại
+fetch("http://localhost:3000/products")//kg ghi ngầm hiểu phương thức get
+   .then(phanHoi =>phanHoi.json())
+   .then(duLieu =>{
+      console.log(duLieu);
+   })
+
